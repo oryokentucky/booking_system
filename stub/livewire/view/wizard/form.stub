@@ -1,5 +1,4 @@
-<x-layouts::app :title="$isEditMode ? 'Edit {{SINGULAR_TITLE}}' : 'New {{SINGULAR_TITLE}}'">
-    <flux:main class="w-full flex flex-col gap-6 pb-3">
+<div class="w-full flex flex-col gap-6 pb-3">
         <flux:heading size="lg" class="mb-2">
             {{ $step != 2 ? 'Please ensure all required details are filled in.' : 'Please review all details before submitting.' }}
         </flux:heading>
@@ -11,5 +10,4 @@
                 @livewire('{{KEBAB_CLASS}}.preview', ['id' => $modelId])
             @endif
         </div>
-    </flux:main>
-</x-layouts::app>
+</div>

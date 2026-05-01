@@ -406,7 +406,7 @@ class MakeLivewireCommand extends Command
 
     protected function createFromStub($stubName, $destinationPath, $replacements)
     {
-        $stubPath = base_path("stubs/livewire/{$stubName}.stub");
+        $stubPath = base_path("stub/livewire/{$stubName}.stub");
         $stubContent = File::get($stubPath);
 
         foreach ($replacements as $key => $value) {
@@ -423,7 +423,7 @@ class MakeLivewireCommand extends Command
 
     protected function addRoutesFromStub($stubName, $replacements = [])
     {
-        $stubPath = base_path("stubs/{$stubName}.stub");
+        $stubPath = base_path("stub/{$stubName}.stub");
 
         if (! File::exists($stubPath)) {
             $this->error("Routes stub file not found: {$stubPath}");

@@ -1,16 +1,16 @@
 <div class="flex flex-col gap-6 w-full pb-3">
-        <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <flux:heading size="xl">{{ ${{SINGULAR_CLASS_LOWER}}->name }}</flux:heading>
+                <flux:heading size="xl">{{ $booking->name }}</flux:heading>
                 <div class="inline-flex align-middle ml-1">
-                    <flux:badge color="{{ ${{SINGULAR_CLASS_LOWER}}->status?->color() }}" size="sm">
-                        {{ ${{SINGULAR_CLASS_LOWER}}->status?->label() }}
+                    <flux:badge color="{{ $booking->status?->color() }}" size="sm">
+                        {{ $booking->status?->label() }}
                     </flux:badge>
                 </div>
             </div>
 
             <div class="flex gap-2">
-                <flux:button href="{{ route('{{KEBAB_CLASS}}.{{FORM_NAME}}', ${{SINGULAR_CLASS_LOWER}}->id) }}" variant="primary" icon="pencil">Edit</flux:button>
+                <flux:button href="{{ route('bookings.form', $booking->id) }}" variant="primary" icon="pencil">Edit</flux:button>
             </div>
         </div>
 
@@ -21,19 +21,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 <div>
                     <flux:text class="text-sm font-semibold">Name</flux:text>
-                    <flux:text class="font-medium">{{ ${{SINGULAR_CLASS_LOWER}}->name ?? '-' }}</flux:text>
+                    <flux:text class="font-medium">{{ $booking->name ?? '-' }}</flux:text>
                 </div>
                 <div>
                     <flux:text class="text-sm font-semibold mb-1">Status</flux:text>
                     <div class="font-medium">
-                        <flux:badge color="{{ ${{SINGULAR_CLASS_LOWER}}->status?->color() }}" size="sm">
-                            {{ ${{SINGULAR_CLASS_LOWER}}->status?->label() }}
+                        <flux:badge color="{{ $booking->status?->color() }}" size="sm">
+                            {{ $booking->status?->label() }}
                         </flux:badge>
                     </div>
                 </div>
                 <div>
                     <flux:text class="text-sm font-semibold">Created At</flux:text>
-                    <flux:text class="font-medium">{{ ${{SINGULAR_CLASS_LOWER}}->created_at->format('d M Y, h:i A') }}</flux:text>
+                    <flux:text class="font-medium">{{ $booking->created_at->format('d M Y, h:i A') }}</flux:text>
                 </div>
             </div>
         </flux:card>

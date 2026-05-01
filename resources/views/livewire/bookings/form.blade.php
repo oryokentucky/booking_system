@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col gap-6 pb-3">
-        <div class="flex justify-between items-center">
-            <flux:heading size="xl">{{ $modelId ? 'Edit' : 'New' }} {{SINGULAR_TITLE}}</flux:heading>
+    <div class="flex justify-between items-center">
+            <flux:heading size="xl">{{ $modelId ? 'Edit' : 'New' }} Booking</flux:heading>
         </div>
 
         <div class="w-full flex flex-col gap-5">
@@ -20,7 +20,7 @@
 
             {{-- Action Buttons --}}
             <div class="flex justify-between gap-4 mt-2">
-                <flux:button href="{{ route('{{KEBAB_CLASS}}.{{INDEX_NAME}}') }}" variant="ghost">Cancel</flux:button>
+                <flux:button href="{{ route('bookings.index') }}" variant="ghost">Cancel</flux:button>
                 <flux:button wire:click="save" variant="primary" class="w-[110px]">Save</flux:button>
             </div>
         </div>
