@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Models\{{SINGULAR_CLASS}};
+use App\Repositories\{{SINGULAR_CLASS}}Repository;
+use App\Services\{{SINGULAR_CLASS}}Service;
+use App\Trait\HasPagination;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+
+class {{INDEX_CLASS}} extends Component
+{
+    use AuthorizesRequests, HasPagination;
+
+    public $keyword;
+    public $status;
+    public $created_at;
+    public $remarks;
+    
+    public ${{PLURAL_CLASS_LOWER}};
+
+    protected {{SINGULAR_CLASS}}Repository $repository;
+    protected {{SINGULAR_CLASS}}Service $service;
+
+    public function boot({{SINGULAR_CLASS}}Repository $repository, {{SINGULAR_CLASS}}Service $service)
+    {
+        $this->repository = $repository;
+        $this->service = $service;
+    }
+
+    public function mount()
+    {
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.read');
+
+        $data = $this->repository->getPaginatedData([
+            'keyword' => $this->keyword,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'perPage' => $this->perPage,
+            'page' => $this->paginatorInfo['currentPage'],
+        ]);
+        $this->{{PLURAL_CLASS_LOWER}} = $data->items();
+        $this->paginate($data);
+    }
+
+    public function search()
+    {
+        $this->paginatorInfo['currentPage'] = 1;
+        $this->mount();
+    }
+
+    public function resetFilters()
+    {
+        $this->reset(['keyword', 'status', 'created_at']);
+        $this->mount();
+    }
+
+    public function showForm()
+    {
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.create');
+        $this->redirectRoute('{{KEBAB_CLASS}}.{{FORM_NAME}}', navigate: true);
+    }
+
+    public function filterByTab($tab)
+    {
+        if ($tab === 'all') {
+            $this->status = null;
+        } else {
+            $this->status = $tab;
+        }
+        $this->paginatorInfo['currentPage'] = 1;
+        $this->mount();
+    }
+
+    public function statusCount($status = null)
+    {
+        return $this->repository->getStatusCount($status, [
+            'keyword' => $this->keyword,
+            'created_at' => $this->created_at,
+        ]);
+    }
+
+    public function {{SINGULAR_CLASS_LOWER}}Status($id, $action)
+    {
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.update');
+        $this->service->updateStatus($id, $action, Auth::id(), $this->remarks ?? null);
+        $this->remarks = null;
+        $this->dispatch('show-toast', type: 'success', title: 'Success', message: '{{SINGULAR_TITLE}} status updated successfully!');
+        $this->mount();
+    }
+    
+    public function delete($id)
+    {
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.delete');
+        $model = $this->repository->findWithDetails($id);
+        $this->service->delete($model);
+        $this->dispatch('show-toast', type: 'success', title: 'Success', message: '{{SINGULAR_TITLE}} deleted successfully!');
+        $this->mount();
+    }
+
+    public function render()
+    {
+        $statusCounts = [
+            'all' => $this->statusCount(),
+            'draft' => $this->statusCount('draft'),
+            'active' => $this->statusCount('active'),
+            'deactivated' => $this->statusCount('deactivated'),
+        ];
+
+        return view('livewire.{{KEBAB_CLASS}}.{{INDEX_NAME}}', [
+            'statusCounts' => $statusCounts,
+        ]);
+    }
+}

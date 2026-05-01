@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Models\{{SINGULAR_CLASS}};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\Component;
+
+class {{FORM_CLASS}} extends Component
+{
+    use AuthorizesRequests;
+
+    public $modelId;
+    public $step = 1;
+    public bool $isEditMode = false;
+
+    public function mount($id = null)
+    {
+        $this->modelId = $id;
+        $this->isEditMode = !empty($id);
+
+        if ($this->isEditMode) {
+            // $this->authorize('{{SINGULAR_CLASS_LOWER}}.read');
+        } else {
+            // $this->authorize('{{SINGULAR_CLASS_LOWER}}.create');
+        }
+    }
+
+    #[On('next-step')]
+    public function nextStep($id = null)
+    {
+        if ($id) {
+            $this->modelId = $id;
+        }
+        $this->step++;
+    }
+
+    #[On('go-to-step')]
+    public function goToStep($step, $id = null)
+    {
+        $this->step = $step;
+        if ($id) {
+            $this->modelId = $id;
+        }
+    }
+
+    #[On('update-model-id')]
+    public function updateModelId($id)
+    {
+        $this->modelId = $id;
+    }
+
+    public function render()
+    {
+        return view('livewire.{{KEBAB_CLASS}}.{{FORM_NAME}}');
+    }
+}

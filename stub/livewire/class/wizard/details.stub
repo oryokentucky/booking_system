@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Models\{{SINGULAR_CLASS}};
+use App\Enums\{{SINGULAR_CLASS}}Status;
+use App\Repositories\{{SINGULAR_CLASS}}Repository;
+use App\Services\{{SINGULAR_CLASS}}Service;
+use App\Rules\{{SINGULAR_CLASS}}Rules;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Component;
+
+class {{DETAILS_CLASS}} extends Component
+{
+    use AuthorizesRequests;
+
+    public $modelId;
+    public $name;
+    public $status = 'draft';
+
+    protected {{SINGULAR_CLASS}}Repository $repository;
+    protected {{SINGULAR_CLASS}}Service $service;
+
+    public function boot({{SINGULAR_CLASS}}Repository $repository, {{SINGULAR_CLASS}}Service $service)
+    {
+        $this->repository = $repository;
+        $this->service = $service;
+    }
+
+    public function mount($id = null)
+    {
+        $this->modelId = $id;
+        if ($id) {
+            // $this->authorize('{{SINGULAR_CLASS_LOWER}}.read');
+            $model = $this->repository->findWithDetails($id);
+            $this->name = $model->name;
+            $this->status = $model->status instanceof {{SINGULAR_CLASS}}Status ? $model->status->value : $model->status;
+        }
+    }
+
+    public function review()
+    {
+        $rules = $this->modelId ? {{SINGULAR_CLASS}}Rules::updateRules($this->modelId) : {{SINGULAR_CLASS}}Rules::createRules();
+        $this->validate($rules);
+
+        $model = $this->modelId ? $this->repository->findWithDetails($this->modelId) : null;
+        
+        $savedModel = $this->service->save([
+            'name' => $this->name,
+            'status' => $this->status,
+        ], $model);
+
+        $this->modelId = $savedModel->id;
+        $this->dispatch('update-model-id', id: $this->modelId);
+        $this->dispatch('next-step', id: $this->modelId);
+    }
+
+    public function render()
+    {
+        return view('livewire.{{KEBAB_CLASS}}.{{DETAILS_VIEW}}');
+    }
+}

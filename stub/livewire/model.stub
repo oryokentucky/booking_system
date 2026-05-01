@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\{{SINGULAR_CLASS}}Status;
+
+class {{SINGULAR_CLASS}} extends BaseModel
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'status',
+        // Add additional fillable fields here
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => {{SINGULAR_CLASS}}Status::class,
+        ];
+    }
+}

@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Models\{{SINGULAR_CLASS}};
+use Livewire\Component;
+
+class Index extends Component
+{
+    public ${{SINGULAR_CLASS_LOWER}}s;
+    public $keyword;
+    public $status;
+    public $created_at;
+
+    public function mount()
+    {
+        $this->loadItems();
+    }
+
+    public function loadItems()
+    {
+        $query = {{SINGULAR_CLASS}}::query();
+
+        if ($this->keyword) {
+            $query->whereLike('name', '%' . $this->keyword . '%');
+        }
+
+        if ($this->status) {
+            $query->where('status', $this->status);
+        }
+
+        if ($this->created_at) {
+            $query->whereDate('created_at', '<=', $this->created_at);
+        }
+
+        $this->{{SINGULAR_CLASS_LOWER}}s = $query->get();
+    }
+
+    public function search()
+    {
+        $this->loadItems();
+    }
+
+    public function resetFilter()
+    {
+        $this->reset(['keyword', 'status', 'created_at']);
+        $this->loadItems();
+    }
+
+    public function showForm()
+    {
+        $this->redirectRoute('{{KEBAB_CLASS}}.form');
+    }
+
+    public function delete($id)
+    {
+        {{SINGULAR_CLASS}}::findOrFail($id)->delete();
+        $this->loadItems();
+        $this->dispatch('show-toast', type: 'success', title: 'Success', message: '{{SINGULAR_CLASS}} deleted successfully!');
+    }
+
+    public function render()
+    {
+        return view('livewire.{{KEBAB_CLASS}}.index');
+    }
+}

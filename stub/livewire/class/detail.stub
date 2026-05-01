@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Models\{{SINGULAR_CLASS}};
+use App\Repositories\{{SINGULAR_CLASS}}Repository;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Component;
+
+class {{DETAIL_CLASS}} extends Component
+{
+    use AuthorizesRequests;
+
+    public ?{{SINGULAR_CLASS}} ${{SINGULAR_CLASS_LOWER}};
+
+    protected {{SINGULAR_CLASS}}Repository $repository;
+
+    public function boot({{SINGULAR_CLASS}}Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function mount($id)
+    {
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.read');
+        $this->{{SINGULAR_CLASS_LOWER}} = $this->repository->findWithDetails($id);
+    }
+
+    public function render()
+    {
+        return view('livewire.{{KEBAB_CLASS}}.{{DETAIL_NAME}}');
+    }
+}

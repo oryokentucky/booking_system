@@ -1,0 +1,33 @@
+<div class="w-full flex flex-col gap-6">
+    {{-- Basic Information --}}
+    <flux:card class="w-full flex flex-col gap-4 !p-6">
+        <div class="flex items-center justify-between mb-2">
+            <flux:heading size="lg">Basic Information</flux:heading>
+            <flux:button wire:click="editDetails" variant="subtle" icon="pencil" size="sm" />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            <div>
+                <flux:text class="text-sm font-semibold">Name</flux:text>
+                <flux:text class="font-medium">{{ ${{SINGULAR_CLASS_LOWER}}->name ?? '-' }}</flux:text>
+            </div>
+            <div>
+                <flux:text class="text-sm font-semibold mb-1">Status</flux:text>
+                <div class="font-medium">
+                    <flux:badge color="{{ ${{SINGULAR_CLASS_LOWER}}->status?->color() }}" size="sm">
+                        {{ ${{SINGULAR_CLASS_LOWER}}->status?->label() }}
+                    </flux:badge>
+                </div>
+            </div>
+            <div>
+                <flux:text class="text-sm font-semibold">Created At</flux:text>
+                <flux:text class="font-medium">{{ ${{SINGULAR_CLASS_LOWER}}->created_at->format('d M Y, h:i A') }}</flux:text>
+            </div>
+        </div>
+    </flux:card>
+
+    {{-- Action Buttons --}}
+    <div class="flex justify-between gap-4 mt-2">
+        <flux:button href="{{ route('{{KEBAB_CLASS}}.{{INDEX_NAME}}') }}" variant="ghost">Cancel</flux:button>
+        <flux:button wire:click="submit" variant="primary" class="w-[110px]">Submit</flux:button>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<flux:dropdown>
+    <flux:button variant="ghost" size="sm" icon="ellipsis-vertical" />
+    <flux:menu>
+        {{-- @can('{{SINGULAR_CLASS_LOWER}}.read') --}}
+        @if(${{SINGULAR_CLASS_LOWER}}->status?->value === 'draft')
+            <flux:menu.item href="{{ route('{{KEBAB_CLASS}}.{{FORM_NAME}}', ${{SINGULAR_CLASS_LOWER}}->id) }}" icon="pencil">
+                Edit
+            </flux:menu.item>
+
+            <flux:modal.trigger name="delete-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}">
+                <flux:menu.item class="text-red-500" icon="trash">Delete</flux:menu.item>
+            </flux:modal.trigger>
+        @else
+            @if({{HAS_DETAIL}})
+            <flux:menu.item href="{{ route('{{KEBAB_CLASS}}.{{DETAIL_NAME}}', ${{SINGULAR_CLASS_LOWER}}->id) }}" icon="document-magnifying-glass">
+                View Details
+            </flux:menu.item>
+            @endif
+
+            <flux:menu.item href="{{ route('{{KEBAB_CLASS}}.{{FORM_NAME}}', ${{SINGULAR_CLASS_LOWER}}->id) }}" icon="pencil">
+                Edit
+            </flux:menu.item>
+        @endif
+        {{-- @endcan --}}
+
+        {{-- @can('{{SINGULAR_CLASS_LOWER}}.update') --}}
+        @if(in_array(${{SINGULAR_CLASS_LOWER}}->status?->value, ['draft', 'deactivated']))
+            <flux:modal.trigger name="activate-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}">
+                <flux:menu.item icon="check-circle" class="text-green-600">Activate</flux:menu.item>
+            </flux:modal.trigger>
+        @elseif(${{SINGULAR_CLASS_LOWER}}->status?->value === 'active')
+            <flux:modal.trigger name="deactivate-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}">
+                <flux:menu.item icon="x-circle" class="text-red-500">Deactivate</flux:menu.item>
+            </flux:modal.trigger>
+        @endif
+        {{-- @endcan --}}
+    </flux:menu>
+</flux:dropdown>
+
+@if(${{SINGULAR_CLASS_LOWER}}->status?->value === 'draft')
+<flux:modal name="delete-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}" class="md:w-[32rem]">
+    @include('livewire.{{KEBAB_CLASS}}.components.status-modal', [
+        'action' => 'delete',
+        '{{SINGULAR_CLASS_LOWER}}' => ${{SINGULAR_CLASS_LOWER}},
+    ])
+</flux:modal>
+@endif
+
+@if(in_array(${{SINGULAR_CLASS_LOWER}}->status?->value, ['draft', 'deactivated']))
+<flux:modal name="activate-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}" class="md:w-[32rem]">
+    @include('livewire.{{KEBAB_CLASS}}.components.status-modal', [
+        'action' => 'activate',
+        '{{SINGULAR_CLASS_LOWER}}' => ${{SINGULAR_CLASS_LOWER}},
+    ])
+</flux:modal>
+@elseif(${{SINGULAR_CLASS_LOWER}}->status?->value === 'active')
+<flux:modal name="deactivate-{{SINGULAR_CLASS_LOWER}}-{{ ${{SINGULAR_CLASS_LOWER}}->id }}" class="md:w-[32rem]">
+    @include('livewire.{{KEBAB_CLASS}}.components.status-modal', [
+        'action' => 'deactivate',
+        '{{SINGULAR_CLASS_LOWER}}' => ${{SINGULAR_CLASS_LOWER}},
+    ])
+</flux:modal>
+@endif

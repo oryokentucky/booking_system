@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Livewire\{{PLURAL_CLASS}};
+
+use App\Enums\{{SINGULAR_CLASS}}Status;
+use App\Models\{{SINGULAR_CLASS}};
+use App\Repositories\{{SINGULAR_CLASS}}Repository;
+use App\Services\{{SINGULAR_CLASS}}Service;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Component;
+
+class Preview extends Component
+{
+    use AuthorizesRequests;
+
+    public $id;
+    public ?{{SINGULAR_CLASS}} ${{SINGULAR_CLASS_LOWER}};
+
+    protected {{SINGULAR_CLASS}}Repository $repository;
+    protected {{SINGULAR_CLASS}}Service $service;
+
+    public function boot({{SINGULAR_CLASS}}Repository $repository, {{SINGULAR_CLASS}}Service $service)
+    {
+        $this->repository = $repository;
+        $this->service = $service;
+    }
+
+    public function mount($id)
+    {
+        $this->id = $id;
+        $this->{{SINGULAR_CLASS_LOWER}} = $this->repository->findWithDetails($id);
+    }
+
+    public function editDetails()
+    {
+        $this->dispatch('go-to-step', step: 1, id: $this->id);
+    }
+
+    public function submit()
+    {
+        // Finalize status dynamically or just persist the record
+        // $this->authorize('{{SINGULAR_CLASS_LOWER}}.update');
+        
+        $this->dispatch('show-toast', type: 'success', title: 'Success', message: '{{SINGULAR_TITLE}} submitted successfully.');
+        return $this->redirectRoute('{{KEBAB_CLASS}}.{{INDEX_NAME}}', navigate: true);
+    }
+
+    public function render()
+    {
+        return view('livewire.{{KEBAB_CLASS}}.preview');
+    }
+}

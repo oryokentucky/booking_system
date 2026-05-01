@@ -1,0 +1,7 @@
+
+// {{PLURAL_TITLE}} Routes (Livewire)
+Route::prefix('{{KEBAB_CLASS}}')->name('{{KEBAB_CLASS}}.')->group(function () {
+    Route::get('/', {{PLURAL_CLASS}}{{INDEX_CLASS}}::class)->name('{{INDEX_NAME}}');
+    Route::get('/{{FORM_NAME}}/{id?}', {{PLURAL_CLASS}}{{FORM_CLASS}}::class)->name('{{FORM_NAME}}');
+    Route::get('/{{DETAIL_NAME}}/{id}', {{PLURAL_CLASS}}{{DETAIL_CLASS}}::class)->name('{{DETAIL_NAME}}');
+});
