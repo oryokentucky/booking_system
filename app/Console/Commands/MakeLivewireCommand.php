@@ -10,7 +10,7 @@ class MakeLivewireCommand extends Command
 {
     /**
      * The name and signature of the console command.
-     *
+     * use php artisan generate:livewire
      * @var string
      */
     protected $signature = 'generate:livewire {name}
@@ -46,16 +46,16 @@ class MakeLivewireCommand extends Command
         $modelExists = File::exists($modelPath);
 
         if (! $modelExists) {
-            $this->error("❌ Model not found: {$singularName}");
-            $this->warn("💡 Please create the model first using: php artisan make:model {$singularName}");
+            $this->error("Model not found: {$singularName}");
+            $this->warn("Please create the model first using: php artisan make:model {$singularName}");
 
             if ($this->confirm('Do you want to create the model now?', true)) {
                 $this->createFromStub('model', app_path('Models/'.$singularName.'.php'), [
                     'SINGULAR_CLASS' => $singularName,
                 ]);
-                $this->info("✅ Model created from custom stub!\n");
+                $this->info("Model created from custom stub!\n");
             } else {
-                $this->warn("⚠️  Continuing without model...\n");
+                $this->warn("Continuing without model...\n");
             }
         } else {
             $this->info("✓ Model found for {$singularName}\n");
@@ -74,12 +74,12 @@ class MakeLivewireCommand extends Command
                 $this->createFromStub('migration', $migrationPath, [
                     'TABLE_NAME' => $tableName,
                 ]);
-                $this->info("✅ Migration created from custom stub!\n");
+                $this->info("Migration created from custom stub!\n");
             } else {
-                $this->warn("⚠️  Continuing without migration...\n");
+                $this->warn("Continuing without migration...\n");
             }
         } else {
-            $this->info("✓ Migration found for {$singularName}\n");
+            $this->info("Migration found for {$singularName}\n");
         }
 
         $all = $this->option('all');
