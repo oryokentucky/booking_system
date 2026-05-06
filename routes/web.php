@@ -5,7 +5,9 @@ use App\Livewire\Bookings\Index as BookingsIndex;
 use App\Livewire\Bookings\Form as BookingsForm;
 use App\Livewire\Bookings\Detail as BookingsDetail;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');

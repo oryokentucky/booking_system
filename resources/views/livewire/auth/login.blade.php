@@ -1,6 +1,12 @@
 <x-layouts::auth :title="__('Log in')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+
+        <flux:heading class="flex items-center justify-center gap-3 p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-400 text-3xl font-bold">
+            {{ __('Wisdom Inn') }} x
+            <img src="{{ asset('images/uthm-holdings.png') }}" alt="Wisdom Inn Logo" class="h-10 w-auto" />
+        </flux:heading>
+
+        <x-auth-header :title="__('Welcome Back !')" :description="__('Enter your email and password below to log in')" />
 
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
