@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <flux:card class="w-full flex flex-col gap-4 !p-6">
+        <flux:card class="w-full flex flex-col gap-4 p-6!">
             <div class="flex items-center justify-between mb-2">
                 <flux:heading size="lg">Basic Information</flux:heading>
             </div>

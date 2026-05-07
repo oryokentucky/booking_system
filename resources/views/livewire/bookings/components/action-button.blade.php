@@ -38,7 +38,7 @@
 </flux:dropdown>
 
 @if($booking->status?->value === 'draft')
-<flux:modal name="delete-booking-{{ $booking->id }}" class="md:w-[32rem]">
+<flux:modal name="delete-booking-{{ $booking->id }}" class="md:w-lg">
     @include('livewire.bookings.components.status-modal', [
         'action' => 'delete',
         'booking' => $booking,
@@ -47,14 +47,14 @@
 @endif
 
 @if(in_array($booking->status?->value, ['draft', 'deactivated']))
-<flux:modal name="activate-booking-{{ $booking->id }}" class="md:w-[32rem]">
+<flux:modal name="activate-booking-{{ $booking->id }}" class="md:w-lg">
     @include('livewire.bookings.components.status-modal', [
         'action' => 'activate',
         'booking' => $booking,
     ])
 </flux:modal>
 @elseif($booking->status?->value === 'active')
-<flux:modal name="deactivate-booking-{{ $booking->id }}" class="md:w-[32rem]">
+<flux:modal name="deactivate-booking-{{ $booking->id }}" class="md:w-lg">
     @include('livewire.bookings.components.status-modal', [
         'action' => 'deactivate',
         'booking' => $booking,
